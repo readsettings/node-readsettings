@@ -1,0 +1,26 @@
+{
+  "name": "readsettings",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "author": "Richie Bendall <richiebendall@gmail.com>",
+  "license": "MIT",
+  "files": [
+    "src/**/*",
+    "dist/**/*"
+  ],
+  "scripts": {
+    "build": "microbundle --target node"
+  },
+  "dependencies": {
+    "@iarna/toml": "^2.2.3",
+    "js-yaml": "^3.13.1",
+    "json5": "^2.1.0"
+  },
+  "devDependencies": {
+    "@types/iarna__toml": "^2.0.0",
+    "@types/js-yaml": "^3.12.1",
+    "@types/json5": "^0.0.30",
+    "@types/node": "^12.7.5",
+    "microbundle": "^0.11.0"
+  }
+}
