@@ -1,26 +1,40 @@
 {
-  "name": "readsettings",
-  "version": "1.0.0",
-  "main": "dist/index.js",
-  "author": "Richie Bendall <richiebendall@gmail.com>",
-  "license": "MIT",
-  "files": [
-    "src/**/*",
-    "dist/**/*"
-  ],
-  "scripts": {
-    "build": "microbundle --target node"
-  },
-  "dependencies": {
-    "@iarna/toml": "^2.2.3",
-    "js-yaml": "^3.13.1",
-    "json5": "^2.1.0"
-  },
-  "devDependencies": {
-    "@types/iarna__toml": "^2.0.0",
-    "@types/js-yaml": "^3.12.1",
-    "@types/json5": "^0.0.30",
-    "@types/node": "^12.7.5",
-    "microbundle": "^0.11.0"
-  }
+    "name": "readsettings",
+    "version": "1.0.0",
+    "main": "dist/index.js",
+    "author": "Richie Bendall <richiebendall@gmail.com>",
+    "license": "MIT",
+    "files": [
+        "src/**/*",
+        "dist/**/*"
+    ],
+    "scripts": {
+        "dev": "yarn js --watch",
+        "build": "yarn js && yarn docs",
+        "js": "microbundle --target node",
+        "docs": "typedoc --options typedoc.json ./src",
+        "lint": "eslint src --ext .ts"
+    },
+    "dependencies": {
+        "@iarna/toml": "^2.2.3",
+        "conf": "^6.1.0",
+        "js-yaml": "^3.13.1",
+        "json5": "^2.1.0",
+        "on-change": "^1.6.2",
+        "xml-js": "^1.6.11"
+    },
+    "devDependencies": {
+        "@types/iarna__toml": "^2.0.0",
+        "@types/js-yaml": "^3.12.1",
+        "@types/json5": "^0.0.30",
+        "@types/node": "^12.7.5",
+        "eslint": "^6.5.1",
+        "eslint-config-richienb": "^0.1.2",
+        "microbundle": "^0.11.0",
+        "typedoc": "^0.15.0"
+    },
+    "resolutions": {
+        "microbundle/rollup-plugin-typescript2/rollup-pluginutils/micromatch/braces": "^3.0.2",
+        "microbundle/rollup-plugin-postcss/cssnano/postcss-svgo/svgo/js-yaml": "^3.13.1"
+    }
 }

@@ -1,59 +1,60 @@
-import * as path from "path"
-import * as fs from "fs"
-import * as json5 from "json5"
-import * as yaml from "js-yaml"
-import * as toml from "@iarna/toml"
+/**
+* @license
+*
+* MIT License
+*
+* Copyright (c) 2019 Richie Bendall
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the 'Software'), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included in all
+* copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+*/
 
-export class ReadSettings {
-    public autosave = true
-    private _dir: string
-    private ext: string
-    private _data: object
+import Conf from "conf"
+import onChange from "on-change"
 
-    private getExt(dir: string): string {
-        return path.extname(dir).slice(1)
-    }
+import removeExtension from "./utils/remove-extension"
+import getExtension from "./utils/get-extension"
+import getFileProviders from "./utils/get-file-provider"
 
-    constructor(dir: string, { autosave = true } = {}) {
-        this.autosave = autosave
-        this._dir = dir
-        this.ext = this.getExt(dir)
+/**
+* Easily manage a configuration file for your application.
+*/
+export class ReadSettings extends Conf {
 
-        if (!["json", "json5", "yml", "yaml", "toml"].includes(this.ext)) throw new TypeError("Invalid file type provided!")
-        else if (!fs.existsSync(dir)) this._data = {}
-        else {
-            const data = fs.readFileSync(dir, "utf8")
-            if (["json", "json5"].includes(this.ext)) this._data = json5.parse(data)
-            else if (["yml", "yaml"].includes(this.ext)) this._data = yaml.safeLoad(data)
-            else if (this.ext === "toml") this._data = toml.parse(data)
-        }
-    }
+    /**
+    * The currently stored data.
+    */
+    public data: object
 
-    private writeFile(data: string) {
-        fs.writeFileSync(this._dir, data)
-    }
+    /**
+    * @param dir The directory to store the settings file.
+    * @param options Custom options to pass to {@link https://github.com/sindresorhus/conf conf}
+    */
+    constructor(dir: string, options?: Conf.Options<any>) {
+        super({
+            configName: removeExtension(dir),
+            fileExtension: getExtension(dir),
+            ...getFileProviders(getExtension(dir)),
+            ...options,
+        })
 
-    public save() {
-        if (["json", "json5"].includes(this.ext)) this.writeFile(json5.stringify(this._data))
-        else if (["yml", "yaml"].includes(this.ext)) this.writeFile(yaml.safeDump(this._data))
-        else if (this.ext === "toml") this.writeFile(toml.stringify((this._data as toml.JsonMap)))
-    }
+        this.data = this.store
 
-    get dir() {
-        return this._dir
-    }
-
-    set dir(val: string) {
-        this._dir = val
-        this.ext = this.getExt(val)
-    }
-
-    get data() {
-        return this._data
-    }
-
-    set data(val) {
-        this._data = val
-        if (this.autosave) this.save()
+        onChange(this.data, () => this.store = this.data)
     }
 }

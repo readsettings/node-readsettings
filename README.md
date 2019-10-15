@@ -1,2 +1,3 @@
-# node-readsettings
- ReadSettings for NodeJS.
+# ReadSettings
+
+Easily manage a configuration file for your application.
