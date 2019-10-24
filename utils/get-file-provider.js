@@ -1,12 +1,10 @@
-import json5 from "json5"
-import * as yaml from "js-yaml"
-import * as toml from "@iarna/toml"
-import * as xml from "xml-js"
-import Conf from "conf"
+const json5 = require("json5")
+const yaml = require("js-yaml")
+const toml = require("@iarna/toml")
+const xml = require("xml-js")
 
 /**
 * The file providers.
-* @private
 */
 const providers = {
     json: {
@@ -38,11 +36,8 @@ const providers = {
 /**
 * Get the parse and stringify functions when given a supported extension.
 * @param ext The extension to retreive the functions for.
-* @private
 */
-export default function getFileProviders(ext: string): Conf.Options<any> {
-    return {
-        serialize: providers[ext].stringify,
-        deserialize: providers[ext].parse,
-    }
-}
+module.exports = (ext) => ({
+    serialize: providers[ext].stringify,
+    deserialize: providers[ext].parse,
+})

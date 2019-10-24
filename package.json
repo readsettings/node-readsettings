@@ -1,20 +1,31 @@
 {
     "name": "readsettings",
-    "version": "1.0.0",
-    "main": "dist/index.js",
+    "version": "0.0.0",
+    "description": "Easily manage a configuration file for your application.",
+    "repository": "https://github.com/readsettings/node-readsettings.git",
     "author": "Richie Bendall <richiebendall@gmail.com>",
     "license": "MIT",
+    "main": "index.js",
     "files": [
-        "src/**/*",
-        "dist/**/*"
+        "index.js",
+        "index.d.ts",
+        "utils/get-extension.js",
+        "utils/get-file-provider.js",
+        "utils/remove-extension.js",
+        "utils/remove-file-part.js"
     ],
-    "scripts": {
-        "dev": "yarn js --watch",
-        "build": "yarn js && yarn docs",
-        "js": "microbundle --target node",
-        "docs": "typedoc --options typedoc.json ./src",
-        "lint": "eslint src --ext .ts"
+    "engines": {
+        "node": ">=8.3"
     },
+    "scripts": {
+        "lint": "eslint .",
+        "test": "yarn lint && ava"
+    },
+    "keywords": [
+        "conf",
+        "readsettings",
+        "storage"
+    ],
     "dependencies": {
         "@iarna/toml": "^2.2.3",
         "conf": "^6.1.0",
@@ -28,13 +39,12 @@
         "@types/js-yaml": "^3.12.1",
         "@types/json5": "^0.0.30",
         "@types/node": "^12.7.5",
+        "ava": "^2.4.0",
         "eslint": "^6.5.1",
         "eslint-config-richienb": "^0.1.2",
-        "microbundle": "^0.11.0",
-        "typedoc": "^0.15.0"
+        "fs-extra": "^8.1.0"
     },
-    "resolutions": {
-        "microbundle/rollup-plugin-typescript2/rollup-pluginutils/micromatch/braces": "^3.0.2",
-        "microbundle/rollup-plugin-postcss/cssnano/postcss-svgo/svgo/js-yaml": "^3.13.1"
+    "eslintConfig": {
+        "extends": "richienb/node"
     }
 }
