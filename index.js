@@ -24,8 +24,6 @@ module.exports = class ReadSettings extends Conf {
             ...options,
         })
 
-        this.data = this.store || {}
-
-        onChange(this.data, () => this.store = this.data)
+        this.data = onChange(this.store || {}, () => this.store = this.data)
     }
 }
